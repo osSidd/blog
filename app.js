@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 var postRouter = require('./routes/posts');
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://library_admin:555Gamg@cluster0.sbeplha.mongodb.net/blog?retryWrites=true&w=majority');
+mongoose.connect(process.env.URL);
 
 const db = mongoose.connection;
 
