@@ -1,11 +1,15 @@
-const db = function(){
-    const mongoose = require('mongoose');
-    mongoose.connect(process.env.MONGO_URL);
+require('dotenv').config();
+const mongoose = require('mongoose');
 
-    const db = mongoose.connection;
+mongoose.set('strictQuery', false)
 
-    db.on('open', () => {console.log('database connected')});
-    db.on('error', (err) => console.error.bind(console, err.message));
-}
+mongoose.connect(process.env.MONGO_URL)
+const db = mongoose.connection
 
-module.exports = db;
+db.on('open', () => {
+    console.log('db connected')
+})
+
+db.on('error', (err) => {
+    console.error.bind(console, err.message)
+})

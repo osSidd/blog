@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const postSchema = new Schema({
+const blogSchema = new Schema({
     title: {
         type: String,
         required: true,
@@ -15,7 +15,7 @@ const postSchema = new Schema({
     body: {
         type: String,
         required: true,
-        minLength: 300,
+        minLength: 30,
     },
     display: {
         type: Boolean,
@@ -25,9 +25,9 @@ const postSchema = new Schema({
     comments : [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Comments',
+            ref: 'Comment',
         }
     ]
 }, {timestamps: true});
 
-module.exports = mongoose.model('Blog', postSchema);
+module.exports = mongoose.model('Blog', blogSchema);

@@ -1,14 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-const posts = require('../controllers/postController');
+const blogs = require('../controllers/blogsController');
 
-router.get('/', posts.get_all_posts);
+//routes
 
-router.get('/:id', posts.get_a_post);
+//get all blogs
+router.get('/', blogs.get_all_blogs);
 
-router.post('/', posts.post_new_post);
+//get a specific blog
+router.get('/:id', blogs.get_a_blog);
 
-router.get('/:id/comments', posts.get_all_comments);
+//post a new blog
+router.post('/', blogs.post_new_blog);
+
+//post a new comment for a specific blog
+router.patch('/:id', blogs.post_new_comment);
 
 module.exports = router;
