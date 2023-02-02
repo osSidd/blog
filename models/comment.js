@@ -10,6 +10,10 @@ const commentSchema = new Schema({
         type: String,
         required: true,
     },
+    blog:{
+        type: Schema.Types.ObjectId,
+        required: true,
+    }
     
 }, {
     timestamps:{

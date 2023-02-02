@@ -14,23 +14,17 @@ exports.get_all_blogs = async function(req,res,next) {
    }
 };
 
-//get a specific blog
-exports.get_a_blog = async function(req,res,next){
+//post a new blog
+exports.post_new_blog = async function(req,res,next){
+
     try{
-        const id = req.params.id;
+        const {title, snippet, body} = req.body;
+        const blog = await Blog.create({
+            title,
+            snippet,
+            body
+        })
 
-        if(!mongoose.Types.ObjectId.isValid(id))
-           return res.status(400).json({
-                error: id + " is not a valid id"
-            })
-        
-        const blog = await Blog.findById(id).populate('comments')
-
-        if(!blog)
-            return res.status(404).json({
-                error: "blog not found"
-            })
-        
         res.status(200).json(blog)
 
     }catch(err){
@@ -40,24 +34,15 @@ exports.get_a_blog = async function(req,res,next){
     }
 }
 
-//post a new blog
-exports.post_new_blog = async function(req,res,next){
-
+//get all comments
+exports.get_all_comments = async function(req,res,next){
     try{
-        const {title, snippet, body, display} = req.body;
-        const blog = await Blog.create({
-            title,
-            snippet,
-            body,
-            display
-        })
-
-        res.status(200).json(blog)
-
+        const id = req.params.id
+        
+        const comments = await Comment.find({blog: id}).sort({createdAt: -1})
+        res.status(200).json(comments)
     }catch(err){
-        res.status(400).json({
-            error: err.message
-        })
+        res.status(400).json(err.message)
     }
 }
 
@@ -72,22 +57,9 @@ exports.post_new_comment = async function(req,res,next){
                 error: id + " is not a valid id"
             })
         
-        const comment = await Comment.create({text, author})
-        const commentId = comment._id
-
-        const blog = await Blog.findByIdAndUpdate({_id: id}, {
-            "$push" :{
-                "comments": commentId
-            }
-        })
-
-        if(!blog)
-            return res.status(404).json({
-                error: "blog not found"
-            })
+        const comment = await Comment.create({text, author, blog: id})
         
-        res.status(200).json(blog)
-
+        res.status(200).json(comment)
     }catch(err){
         res.status(400).json({
             error: err.message
