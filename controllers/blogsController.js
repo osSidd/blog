@@ -1,11 +1,13 @@
 const mongoose = require('mongoose')
+const async = require('async')
+
 const Blog = require('../models/blogs');
 const Comment = require('../models/comment')
 
 //get all blogs
 exports.get_all_blogs = async function(req,res,next) {
    try{
-        const blogs = await Blog.find().sort({createdAt: -1})
+        const blogs = await Blog.find({}, 'title snippet createdAt _id').sort({createdAt: -1})
         res.status(200).json(blogs)
    }catch(err){
         res.status(400).json({
@@ -35,15 +37,28 @@ exports.post_new_blog = async function(req,res,next){
 }
 
 //get all comments
-exports.get_all_comments = async function(req,res,next){
-    try{
-        const id = req.params.id
-        
-        const comments = await Comment.find({blog: id}).sort({createdAt: -1})
-        res.status(200).json(comments)
-    }catch(err){
-        res.status(400).json(err.message)
-    }
+exports.get_all_comments = (req,res,next) => {
+    async.parallel({
+        blog(cb){
+            Blog.findById(req.params.id)
+            .exec(cb)
+        },
+        comments(cb){
+            Comment.find({blog:req.params.id}).exec(cb)
+        }
+    }, function(err,result){
+        if(err)
+            return next(err)
+        if(result.blog === null){
+            const error = new Error('Blog not found')
+            error.status(404)
+            return next(err)
+        }
+        res.json({
+            blog: result.blog,
+            comments: result.comments
+        })
+    })
 }
 
 //post a new comment for a specific blog
