@@ -5,9 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 
-//database
-require('./db.config');
-
 var indexRouter = require('./routes/index');
 var postRouter = require('./routes/posts');
 
