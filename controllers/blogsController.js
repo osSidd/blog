@@ -44,7 +44,7 @@ exports.get_all_comments = (req,res,next) => {
             .exec(cb)
         },
         comments(cb){
-            Comment.find({blog:req.params.id}).exec(cb)
+            Comment.find({blog:req.params.id}).sort({createdAt: -1}).exec(cb)
         }
     }, function(err,result){
         if(err)
