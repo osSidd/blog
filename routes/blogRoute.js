@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const blogs = require('../controllers/blogsController');
+const authRoutes = require('../middleware/authRoutes')
+
+//authorizing users
+router.use(authRoutes)
 
 //routes
 

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const async = require('async')
 
-const Blog = require('../models/blogs');
-const Comment = require('../models/comment')
+const Blog = require('../models/blogModel');
+const Comment = require('../models/commentModel')
 
 //get all blogs
 exports.get_all_blogs = async function(req,res,next) {
