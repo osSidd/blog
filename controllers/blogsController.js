@@ -21,6 +21,7 @@ exports.post_new_blog = async function(req,res,next){
 
     try{
         const {title, snippet, body} = req.body;
+        console.log(req.body)
         const blog = await Blog.create({
             title,
             snippet,
