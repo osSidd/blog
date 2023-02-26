@@ -14,7 +14,7 @@ router.get('/:id/comments', blogs.get_all_comments)
 
 
 //authorizing users
-router.use(authRoutes)
+//router.use(authRoutes)
 
 
 //post a new blog
